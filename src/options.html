@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>PwdHash Extension Options</title>
+	<title>PwdHash-PoC Extension Options</title>
 	<link rel="stylesheet" type="text/css" href="options.css"/>
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="null.js"></script>
@@ -10,26 +10,30 @@
 <body>
 
 <img src="images/icon128.png" />
-<h1>PwdHash Chrome Extension</h1>
+<h1>PwdHash-PoC Chrome Extension</h1>
 
 <!--
 <script type="text/javascript" src="jquery.js"></script>
 -->
 
+<p><label for="salt"><b>User Salt:</b></label><br><input type="text" id="salt" class="setting" /></p>
+
+<p><label for="iterations"><b>Iterations:</b></label><br><input type="number" id="iterations" class="setting" /></p>
+
 <p><input type="checkbox" id="hideIcon" class="setting" />
 	<label for="hideIcon">Hide icon in Chrome's page action toolbar</label></p>
 
 <p><input type="checkbox" id="alertPwd" class="setting" />
-	<label for="alertPwd">Prompt password and hashed</label>
+	<label for="alertPwd">Show original and hashed password</label>
 </p>
 <p>
-	Prompt a dialog box containing password and its hashed.
+	Show a dialog box containing the original password and hashed password on submit (for debugging)
 </p>
 
 <p><input type="checkbox" id="noIntercept" class="setting" />
 	<label for="noIntercept">Disable keyboard security</label></p>
 <p>
-	Prevent website from catching your master password by intercept keyboard events.
+	Keyboard security prevents website from catching your master password by intercept keyboard events.
 </p>
 <!--
 	<br /><a href="http://infocris.nuxit.net/pwdhash/test_keyboard.html">Test keyboard interception shield</a>

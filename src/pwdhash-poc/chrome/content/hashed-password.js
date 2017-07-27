@@ -1,3 +1,12 @@
+/* PwdHash-PoC
+ * Version of PwdHash amended to fix various flaws in the original implementation
+ * This version uses PBKDF2-SHA256 and allows control over the user-specified salt
+ * and iteration count.
+ * Version 0.1 Copyright (C) Cambridge University 2016
+ * Contributors: David Llewellyn-Jones, Graham Rymer
+ * Distributed under the BSD License
+ */
+
 /*
 Copyright 2005 Collin Jackson
 
@@ -17,19 +26,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * Treated as a string, it is the hashed password.
  */
 
-function SPH_HashedPassword(password, realm) {
-  var hashedPassword = this._getHashedPassword(password, realm);
+function SPH_HashedPassword(password, realm, salt, iterations) {
+  var hashedPassword = this._getHashedPassword(password, realm, salt, iterations);
   this.toString = function() { return hashedPassword; }
 }
+
+var SPH_kPasswordPrefix = "@@";
 
 SPH_HashedPassword.prototype = {
 
   /**
    * Determine the hashed password from the salt and the master password
    */
-  _getHashedPassword: function(password, realm) {
-    var hash = b64_hmac_md5(password, realm);
+  _getHashedPassword: function(password, realm, salt, iterations) {
     var size = password.length + SPH_kPasswordPrefix.length;
+    //var hash = b64_hmac_md5(password, realm);
+	var hash = forge.util.encode64(forge.pkcs5.pbkdf2(password + salt, realm, iterations, (2 * size / 3) + 16, forge.sha256.create()));
+
     var nonalphanumeric = password.match(/\W/) != null;
     var result = this._applyConstraints(hash, size, nonalphanumeric);
     return result;

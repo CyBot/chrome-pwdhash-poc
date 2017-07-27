@@ -18,7 +18,7 @@ input[type="password"][secure="yes"]
   /* background-image: url('chrome://browser/skin/Secure.png'); */
 
   /* The oh-so-convenient "click to clear" behavior */
-  -moz-binding: url("chrome://stanford-pwdhash/content/stanford-pwdhash-page.xml#securepwd");
+  -moz-binding: url("chrome://pwdhash-poc/content/pwdhash-poc-page.xml#securepwd");
 
   /* same as browser/themes/winstripe/browser/browser.css */
   /* background-color: #F5F6BE; */

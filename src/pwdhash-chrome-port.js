@@ -21,10 +21,10 @@
 
 /**
   Required : null.js
-        "stanford-pwdhash/chrome/content/md5.js",
-	"stanford-pwdhash/chrome/content/domain-extractor.js",
-	"stanford-pwdhash/chrome/content/hashed-password.js",
-	"stanford-pwdhash/chrome/content/stanford-pwdhash.js",
+	"pwdhash-poc/chrome/content/forge.min.js",
+	"pwdhash-poc/chrome/content/domain-extractor.js",
+	"pwdhash-poc/chrome/content/hashed-password.js",
+	"pwdhash-poc/chrome/content/pwdhash.js",
   Optional : AlternativeDomain.js KeyHooker.js
 **/
 
@@ -209,17 +209,44 @@ var PasswordInputListener = (function () {
 				if (pwdhash_enabled && !pwdhashed) {
 					pwdhashed = true;
 					domain = this.getDomain();
-					var hashed = (new SPH_HashedPassword(password, domain));
-					last_password = password;
-					
-					this.keyhooker.setHashedPassword(hashed);
-					
+					var salt = 'ChangeMe';
+					var iterations = 5000;
+
 					if (typeof this.settings != 'undefined') {
-						this.settings.retrieve('alertPwd', function (value) {
-							if (value) {
-								prompt("Password / hashed", password + " / " + field.value);
-							}
+						//Ugly hack ahead
+						var _this = this;
+						this.settings.retrieve('salt', function (value) {
+							salt = value;
+							_this.settings.retrieve('iterations', function (value) {
+								iterations = value;
+
+								var hashed = (new SPH_HashedPassword(password, domain, salt, iterations));
+								last_password = password;
+								
+								_this.keyhooker.setHashedPassword(hashed);
+								
+								if (typeof _this.settings != 'undefined') {
+									_this.settings.retrieve('alertPwd', function (value) {
+										if (value) {
+											prompt("Password / hashed", password + " / " + field.value);
+										}
+									});
+								}
+							});
 						});
+					} else {
+						var hashed = (new SPH_HashedPassword(password, domain, salt, iterations));
+						last_password = password;
+						
+						this.keyhooker.setHashedPassword(hashed);
+						
+						if (typeof this.settings != 'undefined') {
+							this.settings.retrieve('alertPwd', function (value) {
+								if (value) {
+									prompt("Password / hashed", password + " / " + field.value);
+								}
+							});
+						}
 					}
 				}
 			},

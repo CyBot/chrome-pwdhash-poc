@@ -1,0 +1,3 @@
+content  pwdhash-poc chrome/content/
+locale	pwdhash-poc	en-US	chrome/locale/en-US/
+overlay chrome://browser/content/browser.xul chrome://pwdhash-poc/content/pwdhash-poc-overlay.xul

@@ -10,7 +10,7 @@
   <RDF:Description about="urn:mozilla:locale:en-US">
     <chrome:packages>
       <RDF:Seq about="urn:mozilla:locale:en-US:packages">
-        <RDF:li resource="urn:mozilla:locale:en-US:stanford-pwdhash"/>
+        <RDF:li resource="urn:mozilla:locale:en-US:pwdhash-poc"/>
       </RDF:Seq>
     </chrome:packages>
   </RDF:Description>

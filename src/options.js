@@ -31,8 +31,19 @@ $('.setting').each(function () {
 	old_setting_values[k] = false;
 	try {
 		settings.retrieve(k, function (value) {
-			old_setting_values[k] =  value;
-			$P(k).val(value == null ? false : value);
+			old_setting_values[k] = value;
+			switch (k)
+			{
+				case 'salt':
+					def = 'ChangeMe';
+					break;
+				case 'iterations':
+					def = 5000;
+					break;
+				default:
+					def = false;
+			}
+			$P(k).val(value == null ? def : value);
 		});
 	} catch (e) {
 		console.error('init_setting error');
@@ -40,6 +51,11 @@ $('.setting').each(function () {
 	setting.click(function () {
 		settings.store(k, $P(k).val());
 	});
+	if (setting.type != 'checkbox') {
+		setting.blur(function () {
+			settings.store(k, $P(k).val());
+		});
+	}
 });
 
 });
